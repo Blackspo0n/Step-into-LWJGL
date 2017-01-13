@@ -13,21 +13,19 @@ public class DisplayManager {
 	private static final int FPS_CAPS = 120;
 	
 	public static void createDisplay() {
-		
-		ContextAttribs attribs = new ContextAttribs(3,2);
-		attribs.withForwardCompatible(true);
-		attribs.withProfileCore(true);
-		
-		try {
-			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
-			Display.create(new PixelFormat(), attribs);
-			Display.setTitle("Mein erstes 3D Game");
-		} catch (LWJGLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		GL11.glViewport(0, 0, WIDTH, HEIGHT);
+        ContextAttribs attribs = new ContextAttribs(3,2)
+        .withForwardCompatible(true)
+        .withProfileCore(true);
+         
+        try {
+            Display.setDisplayMode(new DisplayMode(WIDTH,HEIGHT));
+            Display.create(new PixelFormat(), attribs);
+            Display.setTitle("Our First Display!");
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+        }
+         
+        GL11.glViewport(0,0, WIDTH, HEIGHT);
 	}
 	
 	public static void updateDisplay() {
