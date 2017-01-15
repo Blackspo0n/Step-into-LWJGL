@@ -24,6 +24,8 @@ public class Loader {
 	private List<Integer> vbos = new ArrayList<Integer>();
 	private List<Integer> textures = new ArrayList<Integer>();
 	
+	
+	
 	public RawModel loadToVAO(float[] positions, float[] textureCoords, int[] indices) {
 		int vaoID = createVAO();
 		
@@ -36,7 +38,7 @@ public class Loader {
 		
 		return new RawModel(vaoID, indices.length);
 	}
-	
+		
 	public int loadTexture(String fileName) {
 		try {
 			Texture texture = TextureLoader.getTexture("PNG", new FileInputStream("res/" + fileName + ".png"));
