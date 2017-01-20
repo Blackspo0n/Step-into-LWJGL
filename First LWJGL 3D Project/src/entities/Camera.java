@@ -1,6 +1,7 @@
 package entities;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Camera {
@@ -48,6 +49,28 @@ public class Camera {
 			roll -= 0.5f;
 		}
 		
+		acceptInputGrab();
+		
+		updateRotation(5);
+	}
+	
+    public static void acceptInputGrab() {
+        if(Mouse.isInsideWindow() && Mouse.isButtonDown(0)) {
+            Mouse.setGrabbed(true);
+        }
+        if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+            Mouse.setGrabbed(false);
+        }
+    }
+	
+	public void updateRotation(int delta) {
+        if(Mouse.isGrabbed()) {
+            float mouseDX = Mouse.getDX();
+            float mouseDY = -Mouse.getDY();
+            yaw += mouseDX * 0.05f * delta;
+            pitch += mouseDY * 0.0f * delta;
+            //pitch = Math.max(-85, Math.min(85, yaw));
+        }
 	}
 	
 	public Vector3f getPosition() {
