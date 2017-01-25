@@ -39,6 +39,8 @@ public class MasterRenderer {
     private Map<TexturedModel,List<Entity>> entities = new HashMap<TexturedModel,List<Entity>>();
     private List<Terrain> terrains = new ArrayList<Terrain>();
      
+    
+    
     public MasterRenderer(){
         enableBackfaceCulling();
         createProjectionMatrix();

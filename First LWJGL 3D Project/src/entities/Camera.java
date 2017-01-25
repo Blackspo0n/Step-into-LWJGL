@@ -67,8 +67,26 @@ public class Camera {
         if(Mouse.isGrabbed()) {
             float mouseDX = Mouse.getDX();
             float mouseDY = -Mouse.getDY();
+            System.err.println("Pitch: " + this.getPitch() + " Yaw: " + this.getYaw());
+            
             yaw += mouseDX * 0.05f * delta;
-            pitch += mouseDY * 0.0f * delta;
+            
+            if((pitch < 80 || mouseDY < 0) && (pitch > -80 || mouseDY > 0)) {
+            	pitch += mouseDY * 0.05f * delta;
+            	if(pitch > 80) {
+            		pitch = 80;
+            	}
+            	else if(pitch < -80) {
+            		pitch = -80;
+            	}
+            }
+            
+            if(yaw > 360) {
+            	yaw = yaw % 360;
+            }
+            else if(yaw < -360) {
+            	yaw = yaw % -360;
+            }
             //pitch = Math.max(-85, Math.min(85, yaw));
         }
 	}

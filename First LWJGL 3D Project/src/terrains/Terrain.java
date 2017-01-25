@@ -12,37 +12,84 @@ public class Terrain {
     private float x;
     private float z;
     private RawModel model;
-    private ModelTexture texture;
+    private TerrainTexturePack texturePack;
+    private TerrainTexture blendMap;
      
-    public Terrain(int gridX, int gridZ, Loader loader, ModelTexture texture){
-        this.texture = texture;
+    public Terrain(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap){
+        this.texturePack = texturePack;
+        this.blendMap = blendMap;
+        
         this.x = gridX * SIZE;
         this.z = gridZ * SIZE;
         this.model = generateTerrain(loader);
     }
      
-     
-     
-    public float getX() {
+    
+    
+    public TerrainTexturePack getTexturePack() {
+		return texturePack;
+	}
+
+
+
+	public void setTexturePack(TerrainTexturePack texturePack) {
+		this.texturePack = texturePack;
+	}
+
+
+
+	public TerrainTexture getBlendMap() {
+		return blendMap;
+	}
+
+
+
+	public void setBlendMap(TerrainTexture blendMap) {
+		this.blendMap = blendMap;
+	}
+
+
+
+	public static float getSize() {
+		return SIZE;
+	}
+
+
+
+	public static int getVertexCount() {
+		return VERTEX_COUNT;
+	}
+
+
+
+	public void setX(float x) {
+		this.x = x;
+	}
+
+
+
+	public void setZ(float z) {
+		this.z = z;
+	}
+
+
+
+	public void setModel(RawModel model) {
+		this.model = model;
+	}
+
+
+
+	public float getX() {
         return x;
     }
- 
- 
  
     public float getZ() {
         return z;
     }
  
- 
- 
     public RawModel getModel() {
         return model;
-    }
- 
- 
- 
-    public ModelTexture getTexture() {
-        return texture;
     }
  
     private RawModel generateTerrain(Loader loader){
