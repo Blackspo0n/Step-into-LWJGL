@@ -6,89 +6,57 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class Camera {
 	
-	private Vector3f position = new Vector3f(0,5,0);
-	private float pitch = 10;
-	private float yaw;
+	private float distanceFromPlayer = 50f;
+	private float angleAroundPlayer = 0f;
+	
+	
+	private Vector3f position = new Vector3f(0,0,0);
+	private float pitch = 20;
+	private float yaw = 0;
 	private float roll;
 	
-	public Camera() {
+	Player player;
+	
+	public Camera(Player player) {
+		this.player = player;
+
 	}
 
 	public void move() {
-		if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
-			position.z -= 0.2f;
-		}
-
-		if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			position.z += 1.5f;
-		}
+		calculateAngleAroundPlayer();
+		calculatePitch();
+		calculateZoom();
 		
-		if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			position.x += 0.5f;
-		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
-			position.x -= 0.5f;
-		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-			position.y += 0.2f;
-		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_E)) {
-			position.y -= 0.2f;
-		}
-        if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)){
-            position.y+=0.2f;
-        }
-        if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)){
-            position.y-=0.2f;
-        }
-
-		if(Keyboard.isKeyDown(Keyboard.KEY_NUMPAD1)) {
-			roll += 0.5f;
-		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_NUMPAD2)) {
-			roll -= 0.5f;
-		}
+		float horizontalDistance = calculateHorizontalDistance();
+		float verticalDistance = calculateVerticalDistance();
 		
-		acceptInputGrab();
+		calculatecameraPosition(horizontalDistance, verticalDistance);
 		
-		updateRotation(5);
+		this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
+		
 	}
 	
-    public static void acceptInputGrab() {
-        if(Mouse.isInsideWindow() && Mouse.isButtonDown(0)) {
-            Mouse.setGrabbed(true);
-        }
-        if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-            Mouse.setGrabbed(false);
-        }
-    }
+	private float calculateHorizontalDistance() {
+		return  (float)(distanceFromPlayer *Math.cos(Math.toRadians(pitch)));
+		
+	}
 	
-	public void updateRotation(int delta) {
-        if(Mouse.isGrabbed()) {
-            float mouseDX = Mouse.getDX();
-            float mouseDY = -Mouse.getDY();
-            System.err.println("Pitch: " + this.getPitch() + " Yaw: " + this.getYaw());
-            
-            yaw += mouseDX * 0.05f * delta;
-            
-            if((pitch < 80 || mouseDY < 0) && (pitch > -80 || mouseDY > 0)) {
-            	pitch += mouseDY * 0.05f * delta;
-            	if(pitch > 80) {
-            		pitch = 80;
-            	}
-            	else if(pitch < -80) {
-            		pitch = -80;
-            	}
-            }
-            
-            if(yaw > 360) {
-            	yaw = yaw % 360;
-            }
-            else if(yaw < -360) {
-            	yaw = yaw % -360;
-            }
-            //pitch = Math.max(-85, Math.min(85, yaw));
-        }
+	private float calculateVerticalDistance() {
+		return (float)(distanceFromPlayer * Math.sin(Math.toRadians(pitch)));
+		
+	}
+	
+	private void calculatecameraPosition(float horizontalDistance, float verticalDistance){
+		float theta = player.getRotY() + angleAroundPlayer;
+		float offsetX = (float)(horizontalDistance * Math.sin(Math.toRadians(theta)));
+		float offsetZ =(float)(horizontalDistance * Math.cos(Math.toRadians(theta)) );
+		
+		position.x = player.getPosition().x - offsetX;
+		position.z = player.getPosition().z - offsetZ;
+		
+		position.y = player.getPosition().y + verticalDistance;
+		
+		
 	}
 	
 	public Vector3f getPosition() {
@@ -105,6 +73,24 @@ public class Camera {
 
 	public float getRoll() {
 		return roll;
+	}
+
+	private void calculateZoom() {
+		float zoomLevel = Mouse.getDWheel() * 0.1f;
+		distanceFromPlayer -= zoomLevel;
+		
+	}
+	private void calculatePitch() {
+		if(Mouse.isButtonDown(1)) {
+			float pitchChange = Mouse.getDY() * 0.1f;
+			pitch -= pitchChange;
+		}
+	}
+	private void calculateAngleAroundPlayer() {
+		if(Mouse.isButtonDown(0)) {
+			float angleChange = Mouse.getDX() * 0.3f;
+			angleAroundPlayer -= angleChange;
+		}
 	}
 	
 	
