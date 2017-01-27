@@ -59,11 +59,13 @@ public class MainGameLoop {
         		
         Terrain terrain = new Terrain(0,-1,loader,
         	texturePack,
-        	blendMap
+        	blendMap,
+        	"heightmap"
         );
         Terrain terrain2 = new Terrain(-1,-1,loader,
         	texturePack,
-            blendMap
+            blendMap,
+            "heightmap"
         );
         
         MasterRenderer renderer = new MasterRenderer();
