@@ -19,6 +19,22 @@ public class MainGameLoop {
 		DisplayManager.createDisplay();
 		
 		Loader loader = new Loader();
+
+        TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grassy"));
+        TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("dirt"));
+        TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("pinkFlowers"));
+        TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
+        
+        TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
+       
+        TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
+        
+        		
+        Terrain terrain = new Terrain(0,-1,loader,
+        	texturePack,
+        	blendMap,
+        	"heightmap"
+        );
 		
 		RawModel model = OBJLoader.loadObjModel("tree", loader);
 		RawModel model1 = OBJLoader.loadObjModel("grassModel", loader);
@@ -36,55 +52,40 @@ public class MainGameLoop {
         List<Entity> allEntities = new ArrayList<Entity>();
         Random random = new Random();
         for(int i=0;i<500;i++){
-            allEntities.add(new Entity(staticModel, new Vector3f(random.nextFloat()*800 - 400,0,random.nextFloat() * -600),0,0,0,3));
+        	float x = random.nextFloat()*800 - 400;
+        	float z = random.nextFloat() * -600;
+            allEntities.add(new Entity(staticModel, new Vector3f(x,terrain.getHeightOfTerrain(x, z),z),0,0,0,3));
         }
         for(int i=0;i<500;i++){
-            allEntities.add(new Entity(staticModel1, new Vector3f(random.nextFloat()*800 - 400,0,random.nextFloat() * -600),0,0,0,1));
+        	float x = random.nextFloat()*800 - 400;
+        	float z = random.nextFloat() * -600;
+            allEntities.add(new Entity(staticModel1, new Vector3f(x,terrain.getHeightOfTerrain(x, z),z),0,0,0,1));
         }
         for(int i=0;i<500;i++){
-            allEntities.add(new Entity(staticModel2, new Vector3f(random.nextFloat()*800 - 400,0,random.nextFloat() * -600),0,0,0,1));
+
+        	float x = random.nextFloat()*800 - 400;
+        	float z = random.nextFloat() * -600;
+            allEntities.add(new Entity(staticModel2, new Vector3f(x,terrain.getHeightOfTerrain(x, z),z),0,0,0,1));
         }
          
         Light light = new Light(new Vector3f(20000,20000,2000),new Vector3f(1,1,1));
 
-        TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grassy"));
-        TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("dirt"));
-        TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("pinkFlowers"));
-        TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
-        
-        TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
-       
-        TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
-        
-        		
-        Terrain terrain = new Terrain(0,-1,loader,
-        	texturePack,
-        	blendMap,
-        	"heightmap"
-        );
-        Terrain terrain2 = new Terrain(-1,-1,loader,
-        	texturePack,
-            blendMap,
-            "heightmap"
-        );
-        
         MasterRenderer renderer = new MasterRenderer();
         
-        RawModel bunnyModel = OBJLoader.loadObjModel("stanfordBunny",  loader);
-        TexturedModel stanfordBunny = new TexturedModel(bunnyModel, new ModelTexture(loader.loadTexture("white")));
+        RawModel bunnyModel = OBJLoader.loadObjModel("person",  loader);
+        TexturedModel stanfordBunny = new TexturedModel(bunnyModel, new ModelTexture(loader.loadTexture("playerTexture")));
         
-        Player player = new Player(stanfordBunny, new Vector3f(100,0,-50),0,0,0,1);
+        Player player = new Player(stanfordBunny, new Vector3f(100,0,-50),0,0,0,0.3f);
         Camera camera = new Camera(player);   
         
 		while(!Display.isCloseRequested()) {
            // entity.increaseRotation(0, 1, 0);
 			camera.move();
-			player.move();
+			player.move(terrain);
 			
 			renderer.processEntity(player);
 			
 			renderer.processTerrain(terrain);
-			renderer.processTerrain(terrain2);
 			
 			for(Entity lentity: allEntities) {
 				//lentity.increaseRotation(0, 1, 0);
