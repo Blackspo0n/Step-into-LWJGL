@@ -12,11 +12,14 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
  
 import shaders.StaticShader;
-import shaders.TerrainShader;
 import terrains.Terrain;
+import terrains.TerrainRenderer;
+import terrains.TerrainShader;
 import entities.Camera;
 import entities.Entity;
+import entities.EntityRenderer;
 import entities.Light;
+import guis.GuiShader;
  
 public class MasterRenderer {
      
@@ -32,6 +35,8 @@ public class MasterRenderer {
     private TerrainRenderer terrainRenderer;
     private TerrainShader terrainShader = new TerrainShader();
 
+    private GuiShader guiShader = new GuiShader();
+    
     private static final float RED = 0.5f;
     private static final float GREEN = 0.5f;
     private static final float BLUE = 0.5f;
@@ -104,6 +109,7 @@ public class MasterRenderer {
     public void cleanUp(){
         shader.cleanUp();
         terrainShader.cleanUp();
+        
     }
      
     public void prepare() {

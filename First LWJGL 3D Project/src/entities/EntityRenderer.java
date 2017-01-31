@@ -1,6 +1,8 @@
-package renderEngine;
+package entities;
  
 import models.*;
+import renderEngine.MasterRenderer;
+
 import java.util.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.vector.Matrix4f;
@@ -46,6 +48,8 @@ public class EntityRenderer {
          
          ModelTexture texture = model.getTexture();
          
+         shader.loadNumbersOfRows(texture.getNumberOfRows());
+         
          if(texture.isHasTransparency()) {
         	 MasterRenderer.disableBackfaceCulling();
          }
@@ -79,6 +83,7 @@ public class EntityRenderer {
                 entity.getScale()
         );
         
+        shader.loadOffset(entity.getTextureXOffset(), entity.getTextureYOffset());
         shader.loadTransformationMatrix(transformationMatrix);	   
     }
 }

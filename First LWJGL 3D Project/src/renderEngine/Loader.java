@@ -26,7 +26,7 @@ public class Loader {
 	private List<Integer> textures = new ArrayList<Integer>();
 	
 	
-	
+
 	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
 		int vaoID = createVAO();
 		
@@ -39,6 +39,14 @@ public class Loader {
 		unbindVAO();
 		
 		return new RawModel(vaoID, indices.length);
+	}
+	
+
+	public RawModel loadToVAO(float[] positions) {
+		int vaoID = createVAO();
+		storedataInAttributeList(0, 2, positions);
+		unbindVAO();
+		return new RawModel(vaoID, positions.length/2);
 	}
 		
 	public int loadTexture(String fileName) {

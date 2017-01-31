@@ -1,4 +1,4 @@
-package renderEngine;
+package terrains;
 
 import java.util.List;
 
@@ -12,9 +12,6 @@ import org.lwjgl.util.vector.Vector3f;
 import entities.Entity;
 import models.RawModel;
 import models.TexturedModel;
-import shaders.TerrainShader;
-import terrains.Terrain;
-import terrains.TerrainTexturePack;
 import textures.ModelTexture;
 import toolbox.Maths;
 

@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class Camera {
 	
-	private float distanceFromPlayer = 50f;
+	private float distanceFromPlayer = 20f;
 	private float angleAroundPlayer = 0f;
 	
 	
@@ -32,7 +32,7 @@ public class Camera {
 		
 		calculatecameraPosition(horizontalDistance, verticalDistance);
 		
-		this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
+		this.yaw = (180 - (player.getRotY() + angleAroundPlayer));
 		
 	}
 	
@@ -54,7 +54,7 @@ public class Camera {
 		position.x = player.getPosition().x - offsetX;
 		position.z = player.getPosition().z - offsetZ;
 		
-		position.y = player.getPosition().y + verticalDistance;
+		position.y = player.getPosition().y + verticalDistance+3;
 		
 		
 	}

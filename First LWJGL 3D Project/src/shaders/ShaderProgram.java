@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 public abstract class ShaderProgram {
@@ -125,5 +126,11 @@ public abstract class ShaderProgram {
 			System.exit(-1);
 		}
 		return shaderID;
+	}
+
+	public void loadVector(int location, Vector2f vector2f) {
+
+		GL20.glUniform2f(location, vector2f.x, vector2f.y);
+		
 	}
 }
