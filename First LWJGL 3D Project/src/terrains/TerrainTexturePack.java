@@ -38,6 +38,4 @@ public class TerrainTexturePack {
 	public void setBtexture(TerrainTexture btexture) {
 		this.btexture = btexture;
 	}
-	
-	
 }

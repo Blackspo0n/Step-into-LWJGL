@@ -15,6 +15,4 @@ public class TerrainTexture {
 	public void setTextureID(int textureID) {
 		this.textureID = textureID;
 	}
-	
-	
 }

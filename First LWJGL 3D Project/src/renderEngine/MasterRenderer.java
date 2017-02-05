@@ -34,8 +34,6 @@ public class MasterRenderer {
      
     private TerrainRenderer terrainRenderer;
     private TerrainShader terrainShader = new TerrainShader();
-
-    private GuiShader guiShader = new GuiShader();
     
     private static final float RED = 0.5f;
     private static final float GREEN = 0.5f;
@@ -43,9 +41,7 @@ public class MasterRenderer {
      
     private Map<TexturedModel,List<Entity>> entities = new HashMap<TexturedModel,List<Entity>>();
     private List<Terrain> terrains = new ArrayList<Terrain>();
-     
-    
-    
+         
     public MasterRenderer(){
         enableBackfaceCulling();
         createProjectionMatrix();
@@ -66,10 +62,10 @@ public class MasterRenderer {
     }
     
      
-    public void render(Light sun,Camera camera){
+    public void render(List<Light> lights,Camera camera){
         prepare();
         shader.start();
-        shader.loadLight(sun);
+        shader.loadLights(lights);
         shader.loadViewMatrix(camera);
         shader.loadSkyColour(RED, GREEN, BLUE);
         
@@ -79,7 +75,7 @@ public class MasterRenderer {
         
         terrainShader.start();
         terrainShader.loadSkyColour(RED, GREEN, BLUE);
-        terrainShader.loadLight(sun);
+        terrainShader.loadLights(lights);
         terrainShader.loadViewMatrix(camera);
         
         terrainRenderer.render(terrains);

@@ -1,21 +1,17 @@
 package entities;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.input.*;
+import org.lwjgl.util.vector.*;
 
 public class Camera {
-	
 	private float distanceFromPlayer = 20f;
 	private float angleAroundPlayer = 0f;
-	
 	
 	private Vector3f position = new Vector3f(0,0,0);
 	private float pitch = 20;
 	private float yaw = 0;
 	private float roll;
-	
-	Player player;
+	private Player player;
 	
 	public Camera(Player player) {
 		this.player = player;
@@ -53,10 +49,7 @@ public class Camera {
 		
 		position.x = player.getPosition().x - offsetX;
 		position.z = player.getPosition().z - offsetZ;
-		
-		position.y = player.getPosition().y + verticalDistance+3;
-		
-		
+		position.y = player.getPosition().y + verticalDistance+3;		
 	}
 	
 	public Vector3f getPosition() {
@@ -92,6 +85,4 @@ public class Camera {
 			angleAroundPlayer -= angleChange;
 		}
 	}
-	
-	
 }

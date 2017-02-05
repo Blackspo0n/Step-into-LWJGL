@@ -39,11 +39,11 @@ public class MainGameLoop {
         	"heightmap"
         );
 		
-		RawModel model = OBJLoader.loadObjModel("tree", loader);
+		RawModel model = OBJLoader.loadObjModel("pine", loader);
 		RawModel model1 = OBJLoader.loadObjModel("grassModel", loader);
 		RawModel model2 = OBJLoader.loadObjModel("fern", loader);
 		
-		TexturedModel staticModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("tree")));
+		TexturedModel staticModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("pine")));
 		TexturedModel staticModel1 = new TexturedModel(model1,new ModelTexture(loader.loadTexture("grassTexture")));
 		TexturedModel staticModel2 = new TexturedModel(model2,new ModelTexture(loader.loadTexture("fern_atlas")));
 		
@@ -59,7 +59,7 @@ public class MainGameLoop {
         for(int i=0;i<500;i++){
         	float x = random.nextFloat()*800 - 400;
         	float z = random.nextFloat() * -600;
-            allEntities.add(new Entity(staticModel, new Vector3f(x,terrain.getHeightOfTerrain(x, z),z),0,0,0,5));
+            allEntities.add(new Entity(staticModel, new Vector3f(x,terrain.getHeightOfTerrain(x, z),z),0,0,0,0.8f));
         }
         for(int i=0;i<500;i++){
         	float x = random.nextFloat()*800 - 400;
@@ -72,8 +72,11 @@ public class MainGameLoop {
         	float z = random.nextFloat() * -600;
             allEntities.add(new Entity(staticModel2, random.nextInt(4), new Vector3f(x,terrain.getHeightOfTerrain(x, z),z),0,0,0,0.5f));
         }
-         
-        Light light = new Light(new Vector3f(20000,20000,2000),new Vector3f(1,1,1));
+        
+        ArrayList<Light> lights = new ArrayList<Light>();
+        lights.add(new Light(new Vector3f(0,1000,-7000),new Vector3f(1,1,1)));
+        lights.add(new Light(new Vector3f(-200,10,-200),new Vector3f(10,0,0)));
+        lights.add(new Light(new Vector3f(200,10,200),new Vector3f(0,0,10)));
 
         MasterRenderer renderer = new MasterRenderer();
         
@@ -84,11 +87,8 @@ public class MainGameLoop {
         Camera camera = new Camera(player);   
         
         List<GuiTexture> guis = new ArrayList<>();
-        GuiTexture gui1 = new GuiTexture(loader.loadTexture("socuwan"), new Vector2f(0.5f,0.5f), new Vector2f(0.25f,0.25f));
-        GuiTexture gui2 = new GuiTexture(loader.loadTexture("thinmatrix"), new Vector2f(0.30f,0.74f), new Vector2f(0.4f,0.4f));
-
+        GuiTexture gui1 = new GuiTexture(loader.loadTexture("health"), new Vector2f(-0.7f,0.9f), new Vector2f(0.25f,0.25f));
         guis.add(gui1);
-        guis.add(gui2);
         
         GuiRenderer guiRenderer = new GuiRenderer(loader);
         
@@ -101,11 +101,10 @@ public class MainGameLoop {
 			renderer.processTerrain(terrain);
 			
 			for(Entity lentity: allEntities) {
-				//lentity.increaseRotation(0, 1, 0);
 				renderer.processEntity(lentity);
 			}
 			
-			renderer.render(light, camera);
+			renderer.render(lights, camera);
 			guiRenderer.render(guis);
 			
 			DisplayManager.updateDisplay();
